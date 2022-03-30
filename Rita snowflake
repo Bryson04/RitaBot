@@ -1,0 +1,36 @@
+const Discord = require('discord.js') module.exports = { name: 'kick', description: 'Use this command to kick a member from the server so that they have to recieve an invite to re-join it.', async execute(client, message, args) { let PermissionEmbed = new Discord.MessageEmbed() .setDescription(":no_entry: **You do not have Permission to use this command.**") .setColor('#FF0000'); let PermissionEmbed2 = new Discord.MessageEmbed() .setDescription(":no_entry: **I do not have Permission to Kick members.**") .setColor('#FF0000'); if(!message.member.hasPermission("KICK_MEMBERS")) return message.channel.send(PermissionEmbed); if(!message.guild.me.hasPermission("KICK_MEMBERS")) return message.channel.send(PermissionEmbed2); let reason = args.slice(1).join(" "); const mentionedMember = message.mentions.members.first() || await message.guild.members.fetch(args[0]); let yes = 'info' let ErrorEmbed = new Discord.MessageEmbed() .setDescription(":no_entry: **User could not be kicked, the user's role is higher than mine**") .setColor('#FF0000'); let ErrorEmbed2 = new Discord.MessageEmbed() .setDescription(":no_entry: **User could not be kicked, the user's role is higher than Yours**") .setColor('#FF0000'); let ErrorEmbed3 = new Discord.MessageEmbed() .setDescription(":no_entry: **You cannot kick me.**") .setColor('#FF0000'); let ErrorEmbed4 = new Discord.MessageEmbed() .setDescription(":no_entry: **You cannot kick yourself.**") .setColor('#FF0000'); const KickedEmbed = new Discord.MessageEmbed() .setDescription(':white_check_mark: **Successfully Kicked '+mentionedMember.user.tag+'**') .setColor('2eb82e') const Embedhelp = new Discord.MessageEmbed() .setTitle('Kick Command') .setColor('#6DCE75') .setDescription('**Description**\nUse this command to kick a member from the server so that they have to recieve an invite to re-join it') .addFields( { name: '**Usage:**', value: '=kick (user) (reason)'}, { name: '**Example:**', value: '=kick @Michael gtfo'}, { name: '**Info**', value: 'I cannot kick members that have a higher role than me\nYou cannot kick members that have a higher role than you.\nYou cannot kick me.\nYou cannot kick yourself'} ) .setFooter(client.user.tag, client.user.displayAvatarURL()); if (!reason) reason = 'No reason given'; if (!args[0]) return message.channel.send(Embedhelp); if (args[0] === yes.toLowerCase) if (!mentionedMember) return message.channel.send(Embedhelp); if (!mentionedMember.kickable) return message.channel.send(ErrorEmbed); if (mentionedMember.user.id == message.author.id) return message.channel.send(ErrorEmbed4); if (mentionedMember.user.id == client.user.id) return message.channel.send(ErrorEmbed3); if (message.member.roles.highest.position <= mentionedMember.roles.highest.position) return message.channel.send(ErrorEmbed2) const kickEmbed = new Discord.MessageEmbed() .setTitle('You have been Kicked from '+message.guild.name) .setDescription('Reason for Kick: '+reason) .setColor('#6DCE75') .setTimestamp() .setFooter(client.user.tag, client.user.displayAvatarURL()); await mentionedMember.send(kickEmbed).catch(err => console.log(err)); await mentionedMember.kick({ days: 7, reason: reason }).catch(err => console.log(err)).then(() => message.channel.send(KickedEmbed)); } } 
+
+I tried searching online for a fix but couldn't find any that worked.
+
+javascriptnode.jsdiscorddiscord.jsbots
+
+se-share-sheet#willShow s-popover:shown->se-share-sheet#didShow" style="margin: 0px; padding: 0px; border: 0px; font-style: inherit; font-variant: inherit; font-weight: inherit; font-stretch: inherit; line-height: inherit; font-family: inherit; font-size: 13px; vertical-align: baseline; box-sizing: inherit; text-decoration: none; color: var(--black-500); cursor: pointer; user-select: auto;">Share
+
+Follow
+
+edited Apr 19, 2021 at 18:20
+
+Zsolt Meszaros
+
+14.8k1212 gold badges3333 silver badges4040 bronze badges
+
+asked Apr 19, 2021 at 18:06
+
+Ahmed Rashid
+
+6977 bronze badges
+
+Add a comment
+
+Report this ad
+
+1 Answer
+
+Sorted by:
+
+                                              Highest score (default)                                                                   Date modified (newest first)                                                                   Date created (oldest first)                              
+
+0
+
+If your message content is =kick info, args[0] is the string "info". When you try to fetch the member using message.guild.members.fetch(args[0]) it sends a req
+
