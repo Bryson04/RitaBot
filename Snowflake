@@ -1,0 +1,10 @@
+module.exports = {
+  name: 'kick',
+  description:
+    'Use this command to kick a member from the server so that they have to recieve an invite to re-join it.',
+  async execute(client, message, args) {
+    if (args[0] === 'info')
+      return message.channel.send('Some info about this command...')
+
+    let PermissionEmbed = new Discord.MessageEmbed()
+    // ...
